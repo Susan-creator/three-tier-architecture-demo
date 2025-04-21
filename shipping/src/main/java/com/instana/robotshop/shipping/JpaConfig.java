@@ -17,7 +17,7 @@ public class JpaConfig {
 
         logger.info("jdbc url {}", JDBC_URL);
 
-        DataSourceBuilder bob = DataSourceBuilder.create();
+        DataSourceBuilder<?> bob = DataSourceBuilder.create();
 
         bob.driverClassName("com.mysql.jdbc.Driver");
         bob.url(JDBC_URL);

@@ -18,6 +18,8 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.lang.NonNull;
+
 
 import java.util.Random;
 
@@ -46,27 +48,22 @@ public class ShippingServiceApplication implements WebMvcConfigurer {
     @Order(Ordered.HIGHEST_PRECEDENCE)
     private static class DataSourcePostProcessor implements BeanPostProcessor {
         @Override
-        public Object postProcessBeforeInitialization(Object bean, String name) throws BeansException {
+        public Object postProcessAfterInitialization(@NonNull Object bean, @NonNull String name)  throws BeansException {
             if (bean instanceof DataSource) {
                 bean = new RetryableDataSource((DataSource)bean);
             }
             return bean;
         }
-
-        @Override
-        public Object postProcessAfterInitialization(Object bean, String name) throws BeansException {
-            return bean;
-        }
     }
 
     @Override
-    public void addInterceptors(InterceptorRegistry registry) {
+    public void addInterceptors(@NonNull InterceptorRegistry registry) {
         registry.addInterceptor(new InstanaDatacenterTagInterceptor());
     }
 
     private static class InstanaDatacenterTagInterceptor extends HandlerInterceptorAdapter {
         @Override
-        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        public boolean preHandle(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull Object handler) throws Exception {
 
             SpanSupport.annotate("datacenter", DATA_CENTERS[new Random().nextInt(DATA_CENTERS.length)]);
 

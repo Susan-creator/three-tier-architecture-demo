@@ -5,7 +5,7 @@ public class Calculator {
     private double latitude = 0;
     private double longitude = 0;
 
-    Calculator(double latitdue, double longitude) {
+    Calculator(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -21,7 +21,7 @@ public class Calculator {
      * Formula is Haversine https://www.movable-type.co.uk/scripts/latlong.html
      **/
     public long getDistance(double targetLatitude, double targetLongitude) {
-        double distance = 0.0;
+        // Removed unused variable 'distance'
         double earthRadius = 6371e3; // meters
 
         // convert to radians

@@ -23,7 +23,7 @@ public class Controller {
 
     private String CART_URL = String.format("http://%s/shipping/", getenv("CART_ENDPOINT", "cart"));
 
-    public static List bytesGlobal = Collections.synchronizedList(new ArrayList<byte[]>());
+    public static List<byte[]> bytesGlobal = Collections.synchronizedList(new ArrayList<byte[]>());
 
     @Autowired
     private CityRepository cityrepo;
@@ -96,7 +96,7 @@ public class Controller {
         /*
          * This is a dirty hack to limit the result size
          * I'm sure there is a more spring boot way to do this
-         * TODO - neater
+         
          */
         if (cities.size() > 10) {
             cities = cities.subList(0, 9);

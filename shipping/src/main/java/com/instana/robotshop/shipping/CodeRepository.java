@@ -1,12 +1,11 @@
 package com.instana.robotshop.shipping;
 
-import java.util.List;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 public interface CodeRepository extends PagingAndSortingRepository<Code, Long> {
 
-    Iterable<Code> findAll();
+    // The findAll() method is inherited from CrudRepository and does not need to be redefined.
 
     Code findById(long id);
 }

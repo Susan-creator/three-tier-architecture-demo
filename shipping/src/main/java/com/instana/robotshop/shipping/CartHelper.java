@@ -12,9 +12,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
+import org.apache.http.client.config.RequestConfig;
 
 public class CartHelper {
     private static final Logger logger = LoggerFactory.getLogger(CartHelper.class);
@@ -25,7 +23,7 @@ public class CartHelper {
         this.baseUrl = baseUrl;
     }
 
-    // TODO - Remove deprecated calls
+    
     public String addToCart(String id, String data) {
         logger.info("add shipping to cart {}", id);
         StringBuilder buffer = new StringBuilder();
@@ -33,13 +31,18 @@ public class CartHelper {
         CloseableHttpClient httpClient = null;
         try {
             // set timeout to 5 secs
-            HttpParams httpParams = new BasicHttpParams();
-            HttpConnectionParams.setConnectionTimeout(httpParams, 5000);
+            // set timeout to 5 secs
+            RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(5000)
+                .setSocketTimeout(5000)
+                .build();
 
-            httpClient = HttpClients.createDefault();
-            HttpPost postRequest = new HttpPost(baseUrl + id);
+            httpClient = HttpClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .build();
             StringEntity payload = new StringEntity(data);
             payload.setContentType("application/json");
+            HttpPost postRequest = new HttpPost(baseUrl + "/cart/" + id);
             postRequest.setEntity(payload);
             CloseableHttpResponse res = httpClient.execute(postRequest);
 
